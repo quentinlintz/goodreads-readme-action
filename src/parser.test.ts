@@ -142,31 +142,111 @@ describe("parseXml", () => {
   });
 
   test("zero rating", () => {
-    const blankRating = singleBookXmlData.replace(
+    const rating = singleBookXmlData.replace(
       "<user_rating>3</user_rating>",
       "<user_rating>0</user_rating>",
     );
-    const books = parseXml(blankRating);
+    const books = parseXml(rating);
     expect(books).toHaveLength(1);
     expect(books[0]?.user_rating).toBe(0);
   });
 
+  test(".25 rating", () => {
+    const rating = singleBookXmlData.replace(
+      "<user_rating>3</user_rating>",
+      "<user_rating>3.25</user_rating>",
+    );
+    const books = parseXml(rating);
+    expect(books).toHaveLength(1);
+    expect(books[0]?.user_rating).toBe(3.25);
+  });
+
+  test(".5 rating", () => {
+    const rating = singleBookXmlData.replace(
+      "<user_rating>3</user_rating>",
+      "<user_rating>3.5</user_rating>",
+    );
+    const books = parseXml(rating);
+    expect(books).toHaveLength(1);
+    expect(books[0]?.user_rating).toBe(3.5);
+  });
+
+  test(".75 rating", () => {
+    const rating = singleBookXmlData.replace(
+      "<user_rating>3</user_rating>",
+      "<user_rating>3.75</user_rating>",
+    );
+    const books = parseXml(rating);
+    expect(books).toHaveLength(1);
+    expect(books[0]?.user_rating).toBe(3.75);
+  });
+
+  test("-1 rating", () => {
+    const rating = singleBookXmlData.replace(
+      "<user_rating>3</user_rating>",
+      "<user_rating>-1</user_rating>",
+    );
+    try {
+      parseXml(rating);
+      expect.fail("parsing should have rejected the -1 rating");
+    } catch (error: unknown) {
+      if (error instanceof ZodError) {
+        expect(error.issues).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              code: "too_small",
+              message: "Too small: expected number to be >=0",
+              path: ["rss", "channel", "item", 0, "user_rating"],
+            }),
+          ]),
+        );
+      } else {
+        throw error;
+      }
+    }
+  });
+
+  test("6 rating", () => {
+    const rating = singleBookXmlData.replace(
+      "<user_rating>3</user_rating>",
+      "<user_rating>6</user_rating>",
+    );
+    try {
+      parseXml(rating);
+      expect.fail("parsing should have rejected the 6 rating");
+    } catch (error: unknown) {
+      if (error instanceof ZodError) {
+        expect(error.issues).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              code: "too_big",
+              message: "Too big: expected number to be <=5",
+              path: ["rss", "channel", "item", 0, "user_rating"],
+            }),
+          ]),
+        );
+      } else {
+        throw error;
+      }
+    }
+  });
+
   test("leading zeroes in rating", () => {
-    const blankRating = singleBookXmlData.replace(
+    const rating = singleBookXmlData.replace(
       "<user_rating>3</user_rating>",
       "<user_rating>003</user_rating>",
     );
-    const books = parseXml(blankRating);
+    const books = parseXml(rating);
     expect(books).toHaveLength(1);
     expect(books[0]?.user_rating).toBe(3);
   });
 
   test("blank rating", () => {
-    const blankRating = singleBookXmlData.replace(
+    const rating = singleBookXmlData.replace(
       "<user_rating>3</user_rating>",
       "<user_rating></user_rating>",
     );
-    const books = parseXml(blankRating);
+    const books = parseXml(rating);
     expect(books.length).toBe(1);
     expect(books[0]).toBeDefined();
     expect(books[0]?.user_rating).toBe(0);

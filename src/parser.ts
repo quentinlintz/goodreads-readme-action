@@ -28,7 +28,7 @@ export const bookSchema = z.object({
   author_name: z.string().min(1),
   user_rating: z.preprocess(
     (rating) => (rating === "" ? 0 : rating),
-    z.number().int().min(0).max(5),
+    z.number().min(0).max(5),
   ),
   user_read_at: z
     .string()
