@@ -1,6 +1,6 @@
 {
   "name": "goodreads-readme-action",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Automatically update your profile README with any of your public [Goodreads](https://goodreads.com) shelves!",
   "scripts": {
     "build": "esbuild src/index.ts --bundle --format=cjs --outfile=dist/index.cjs --platform=node --target=node24",
