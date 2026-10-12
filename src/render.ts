@@ -19,9 +19,12 @@ export const renderShelf = (
   shelf.forEach((book) => {
     const title = escapeMarkdownText(book.title);
     const authorName = escapeMarkdownText(book.author_name);
+    const roundedRating = Math.floor(book.user_rating);
     const stars =
       showRating && book.user_rating !== 0
-        ? "★".repeat(book.user_rating) + "☆".repeat(5 - book.user_rating)
+        ? "★".repeat(roundedRating) +
+          "☆".repeat(5 - roundedRating) +
+          ` (${book.user_rating}/5)`
         : "";
     lines.push(
       `- [${title}](https://www.goodreads.com/book/show/${book.book_id}), ${authorName} ${stars}`.trim(),

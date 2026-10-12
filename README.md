@@ -140,7 +140,7 @@ Profile README:
 ```markdown
 <!-- GOODREADS-LIST:START -->
 
-- [A Gentleman in Moscow](https://www.goodreads.com/book/show/45695810), Amor Towles ★★★☆☆
+- [A Gentleman in Moscow](https://www.goodreads.com/book/show/45695810), Amor Towles ★★★☆☆ (3/5)
 - [Great Songwriting Techniques](https://www.goodreads.com/book/show/39704081), Jack Perricone
 
 <!-- GOODREADS-LIST:END -->

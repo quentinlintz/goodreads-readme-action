@@ -27,17 +27,47 @@ describe("renderShelf", () => {
   });
 
   test("render rating", () => {
-    const expectedMarkdown = `- [Book 1](https://www.goodreads.com/book/show/1), Author 1 ★★★★★
-- [Book 2](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆`;
+    const expectedMarkdown = `- [Book 1](https://www.goodreads.com/book/show/1), Author 1 ★★★★★ (5/5)
+- [Book 2](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆ (3/5)`;
     const markdown = renderShelf([bookOne, bookTwo], true);
     expect(markdown).toBe(expectedMarkdown);
   });
 
   test("zero rating", () => {
     const expectedMarkdown = `- [Book 1](https://www.goodreads.com/book/show/1), Author 1
-- [Book 2](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆`;
+- [Book 2](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆ (3/5)`;
     const markdown = renderShelf(
       [{ ...bookOne, user_rating: 0 }, bookTwo],
+      true,
+    );
+    expect(markdown).toBe(expectedMarkdown);
+  });
+
+  test(".25 rating", () => {
+    const expectedMarkdown = `- [Book 1](https://www.goodreads.com/book/show/1), Author 1 ★★★☆☆ (3.25/5)
+- [Book 2](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆ (3/5)`;
+    const markdown = renderShelf(
+      [{ ...bookOne, user_rating: 3.25 }, bookTwo],
+      true,
+    );
+    expect(markdown).toBe(expectedMarkdown);
+  });
+
+  test(".5 rating", () => {
+    const expectedMarkdown = `- [Book 1](https://www.goodreads.com/book/show/1), Author 1 ★★★☆☆ (3.5/5)
+- [Book 2](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆ (3/5)`;
+    const markdown = renderShelf(
+      [{ ...bookOne, user_rating: 3.5 }, bookTwo],
+      true,
+    );
+    expect(markdown).toBe(expectedMarkdown);
+  });
+
+  test(".75 rating", () => {
+    const expectedMarkdown = `- [Book 1](https://www.goodreads.com/book/show/1), Author 1 ★★★☆☆ (3.75/5)
+- [Book 2](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆ (3/5)`;
+    const markdown = renderShelf(
+      [{ ...bookOne, user_rating: 3.75 }, bookTwo],
       true,
     );
     expect(markdown).toBe(expectedMarkdown);
@@ -67,8 +97,8 @@ describe("renderShelf", () => {
   });
 
   test("escaped html text", () => {
-    const expectedMarkdown = `- [Book 1](https://www.goodreads.com/book/show/1), \\<i\\>Author 1\\</i\\> ★★★★★
-- [\\<i\\>Book 2\\</i\\>](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆`;
+    const expectedMarkdown = `- [Book 1](https://www.goodreads.com/book/show/1), \\<i\\>Author 1\\</i\\> ★★★★★ (5/5)
+- [\\<i\\>Book 2\\</i\\>](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆ (3/5)`;
     const markdown = renderShelf(
       [
         { ...bookOne, author_name: "<i>Author 1</i>" },
@@ -80,8 +110,8 @@ describe("renderShelf", () => {
   });
 
   test("escaped markdown text", () => {
-    const expectedMarkdown = `- [Book 1](https://www.goodreads.com/book/show/1), \\[Author 1\\] ★★★★★
-- [\\[Book 2\\]](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆`;
+    const expectedMarkdown = `- [Book 1](https://www.goodreads.com/book/show/1), \\[Author 1\\] ★★★★★ (5/5)
+- [\\[Book 2\\]](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆ (3/5)`;
     const markdown = renderShelf(
       [
         { ...bookOne, author_name: "[Author 1]" },
@@ -93,8 +123,8 @@ describe("renderShelf", () => {
   });
 
   test("escaped LF, CRLF, and CR", () => {
-    const expectedMarkdown = `- [Book 1](https://www.goodreads.com/book/show/1), Author 1 ★★★★★
-- [Book 2](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆`;
+    const expectedMarkdown = `- [Book 1](https://www.goodreads.com/book/show/1), Author 1 ★★★★★ (5/5)
+- [Book 2](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆ (3/5)`;
     const markdown = renderShelf(
       [
         {
@@ -111,8 +141,8 @@ describe("renderShelf", () => {
 
   test("escaped backslash, backtick, underscore, asterisk", () => {
     const expectedMarkdown =
-      "- [Book 1](https://www.goodreads.com/book/show/1), Author 1 ★★★★★\n" +
-      "- [\\_Book:\\_ \\`2\\!\\!\\`](https://www.goodreads.com/book/show/2), Author \\*2\\*\\.\\\\ ★★★☆☆";
+      "- [Book 1](https://www.goodreads.com/book/show/1), Author 1 ★★★★★ (5/5)\n" +
+      "- [\\_Book:\\_ \\`2\\!\\!\\`](https://www.goodreads.com/book/show/2), Author \\*2\\*\\.\\\\ ★★★☆☆ (3/5)";
     const markdown = renderShelf(
       [
         bookOne,
