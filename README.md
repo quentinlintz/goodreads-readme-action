@@ -148,6 +148,8 @@ Profile README:
 
 The stars are omitted if the book does not have a user rating or if the user hasn't enabled it. The default ordering is most-recently added at the top.
 
+Goodreads has [added quarter- and half-star ratings](https://www.goodreads.com/blog/show/3199), but I've observed their RSS may not support them yet (as of October 12, 2026). Filled stars show the whole-number portion, while the numeric score preserves the exact RSS rating. The action supports fractional values whenever RSS supplies them.
+
 ### Empty shelf
 
 Shelf RSS:

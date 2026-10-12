@@ -51842,7 +51842,7 @@ var bookSchema = external_exports.object({
   author_name: external_exports.string().min(1),
   user_rating: external_exports.preprocess(
     (rating) => rating === "" ? 0 : rating,
-    external_exports.number().int().min(0).max(5)
+    external_exports.number().min(0).max(5)
   ),
   user_read_at: external_exports.string().optional().transform((date6, ctx) => parseDateString(date6, ctx)),
   user_date_added: external_exports.string().optional().transform((date6, ctx) => parseDateString(date6, ctx))
@@ -51965,7 +51965,8 @@ var renderShelf = (shelf, showRating = false) => {
   shelf.forEach((book) => {
     const title = escapeMarkdownText(book.title);
     const authorName = escapeMarkdownText(book.author_name);
-    const stars = showRating && book.user_rating !== 0 ? "\u2605".repeat(book.user_rating) + "\u2606".repeat(5 - book.user_rating) : "";
+    const roundedRating = Math.floor(book.user_rating);
+    const stars = showRating && book.user_rating !== 0 ? "\u2605".repeat(roundedRating) + "\u2606".repeat(5 - roundedRating) + ` (${book.user_rating}/5)` : "";
     lines.push(
       `- [${title}](https://www.goodreads.com/book/show/${book.book_id}), ${authorName} ${stars}`.trim()
     );
