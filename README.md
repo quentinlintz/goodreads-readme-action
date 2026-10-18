@@ -8,6 +8,8 @@ This action is for developers who read a lot (like myself). It uses the RSS feed
 
 See my [GitHub profile](https://github.com/quentinlintz) for a working example!
 
+![Example Goodreads shelves showing currently reading books and recently read books with ratings](docs/images/example.png)
+
 ## Setup
 
 ### Full example
