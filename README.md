@@ -1,12 +1,15 @@
 # Goodreads README Action
 
+> [!WARNING]
+> Goodreads [discontinued RSS in October 2026](https://www.goodreads.com/blog/show/20-more-rss-feeds), which was required for this action to successfully run. Releases v1.0.0, v1.0.1, and the main branch are affected by a 404 returned from the RSS path, but existing README content is preserved. A solution to pull data from Goodreads widgets is currently [under development](https://github.com/quentinlintz/goodreads-readme-action/pull/2).
+
 Automatically update your profile README with any of your public [Goodreads](https://goodreads.com) shelves!
 
 ## Why
 
 This action is for developers who read a lot (like myself). It uses the RSS feed associated with a Goodreads profile to pull shelf data and replaces _part_ of your profile README automatically. It's currently experimental.
 
-See my [GitHub profile](https://github.com/quentinlintz) for a working example!
+See my [GitHub profile](https://github.com/quentinlintz) for an example of the output. Books won't successfully update until the widget migration is released.
 
 ![Example Goodreads shelves showing currently reading books and recently read books with ratings](docs/images/example.png)
 
