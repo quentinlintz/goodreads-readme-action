@@ -38,6 +38,7 @@
     "@actions/core": "^3.0.1",
     "fast-xml-parser": "^5.11.1",
     "fast-xml-validator": "^1.4.2",
+    "json5": "^2.2.3",
     "zod": "^4.6.5"
   }
 }

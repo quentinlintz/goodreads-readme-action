@@ -1,3 +1,5 @@
+import JSON5 from "json5";
+
 const checkEndingBackslashes = (text: string): boolean => {
   let count = 0;
   for (let i = text.length - 2; i >= 0; i--) {
@@ -11,7 +13,7 @@ const checkEndingBackslashes = (text: string): boolean => {
 };
 
 export const extractWidgetCode = (text: string): string => {
-  const widgetCodePrefix = "var widget_code = '";
+  const widgetCodePrefix = "var widget_code = ";
 
   const lines = text.split(/\r?\n/);
   const widgetCodeLine = lines.find((line) => line.includes(widgetCodePrefix));
@@ -31,8 +33,12 @@ export const extractWidgetCode = (text: string): string => {
 
   const extractedWidgetCode = trimmedWidgetCodeLine.slice(
     trimmedWidgetCodeLine.indexOf(widgetCodePrefix) + widgetCodePrefix.length,
-    -1,
   );
+  const parsedWidgetCode: unknown = JSON5.parse(extractedWidgetCode);
 
-  return extractedWidgetCode;
+  if (typeof parsedWidgetCode !== "string") {
+    throw new Error("Widget code is not of type string");
+  }
+
+  return parsedWidgetCode;
 };
