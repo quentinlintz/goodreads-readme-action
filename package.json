@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@actions/core": "^3.0.1",
+    "cheerio": "^1.2.0",
     "fast-xml-parser": "^5.11.1",
     "fast-xml-validator": "^1.4.2",
     "json5": "^2.2.3",
