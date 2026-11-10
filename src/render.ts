@@ -1,5 +1,3 @@
-import type { Book } from "./parser.js";
-
 const escapeMarkdownText = (text: string): string => {
   return text
     .replace(/\r\n?|\n/g, " ")
@@ -7,8 +5,15 @@ const escapeMarkdownText = (text: string): string => {
     .trim();
 };
 
+export type RenderableBook = {
+  title: string;
+  authorName: string;
+  userRating: number;
+  url: string;
+};
+
 export const renderShelf = (
-  shelf: Book[],
+  shelf: RenderableBook[],
   showRating: boolean = false,
 ): string => {
   if (shelf.length === 0) {
@@ -18,17 +23,15 @@ export const renderShelf = (
   const lines: string[] = [];
   shelf.forEach((book) => {
     const title = escapeMarkdownText(book.title);
-    const authorName = escapeMarkdownText(book.author_name);
-    const roundedRating = Math.floor(book.user_rating);
+    const authorName = escapeMarkdownText(book.authorName);
+    const roundedRating = Math.floor(book.userRating);
     const stars =
-      showRating && book.user_rating !== 0
+      showRating && book.userRating !== 0
         ? "★".repeat(roundedRating) +
           "☆".repeat(5 - roundedRating) +
-          ` (${book.user_rating}/5)`
+          ` (${book.userRating}/5)`
         : "";
-    lines.push(
-      `- [${title}](https://www.goodreads.com/book/show/${book.book_id}), ${authorName} ${stars}`.trim(),
-    );
+    lines.push(`- [${title}](${book.url}), ${authorName} ${stars}`.trim());
   });
 
   return lines.join("\n");
