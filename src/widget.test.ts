@@ -14,11 +14,11 @@ const currentlyReadingHtmlPath = path.resolve(
 );
 const readTxtPath = path.resolve(
   process.cwd(),
-  "tests/fixtures/widget-read.txt",
+  "tests/fixtures/widget-read-dr-desc.txt",
 );
 const readHtmlPath = path.resolve(
   process.cwd(),
-  "tests/fixtures/widget-read.expected.html",
+  "tests/fixtures/widget-read-dr-desc.expected.html",
 );
 const currentlyReadingTxtData = fs.readFileSync(
   currentlyReadingTxtPath,

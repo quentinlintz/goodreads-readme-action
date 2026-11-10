@@ -98,7 +98,7 @@ const currentlyReadingHtmlFilePath = path.resolve(
 );
 const readHtmlFilePath = path.resolve(
   process.cwd(),
-  "tests/fixtures/widget-read.expected.html",
+  "tests/fixtures/widget-read-dr-desc.expected.html",
 );
 
 const widgetCurrentlyReadingMarkdownFilePath = path.resolve(
@@ -107,11 +107,11 @@ const widgetCurrentlyReadingMarkdownFilePath = path.resolve(
 );
 const widgetReadMarkdownFilePath = path.resolve(
   process.cwd(),
-  "tests/fixtures/widget-read.expected.md",
+  "tests/fixtures/widget-read-dr-desc.expected.md",
 );
 const widgetReadRatingsMarkdownFilePath = path.resolve(
   process.cwd(),
-  "tests/fixtures/widget-read-ratings.expected.md",
+  "tests/fixtures/widget-read-dr-desc-ratings.expected.md",
 );
 
 const currentlyReadingHtmlData = fs.readFileSync(
