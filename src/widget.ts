@@ -1,6 +1,6 @@
 import { z } from "zod";
 import JSON5 from "json5";
-import * as cherrio from "cheerio";
+import * as cheerio from "cheerio";
 import { bookSchema } from "./parser.js";
 
 const isOnlyDigits = (str: string): boolean => {
@@ -84,7 +84,7 @@ export const extractWidgetCode = (text: string): string => {
 
 export const parseHtml = (widgetCode: string): WidgetBook[] => {
   const books: WidgetBook[] = [];
-  const $ = cherrio.load(widgetCode, null, false);
+  const $ = cheerio.load(widgetCode, null, false);
   const customContainer = $('[class^="gr_custom_container_"]');
   if (customContainer.length === 0) throw new Error("Missing custom container");
   const shelfHeader = customContainer.children('[class^="gr_custom_header_"]');

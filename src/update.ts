@@ -1,12 +1,12 @@
 import fs from "fs";
 import path from "path";
-import { fetchShelf } from "./fetch.js";
+import { fetchWidgetShelf } from "./fetch.js";
 import { parseInputs, type ParseInputsParams } from "./inputs.js";
-import { orderShelf } from "./ordering.js";
-import { parseXml, type Book } from "./parser.js";
+import { type Book } from "./parser.js";
 import { replaceSection } from "./readme.js";
 import { renderShelf, type RenderableBook } from "./render.js";
-import type { WidgetBook } from "./widget.js";
+import { extractWidgetCode, parseHtml, type WidgetBook } from "./widget.js";
+import { randomInt } from "crypto";
 
 export type UpdateReadmeOutput = {
   hasChanged: boolean;
@@ -40,17 +40,24 @@ export const updateReadme = async (
 
   const readmeFilePath = path.resolve(process.cwd(), readmePath);
   const readmeData = fs.readFileSync(readmeFilePath, "utf-8");
-  const fetched = await fetchShelf(goodreadsId, shelf);
-  const parsed = parseXml(fetched);
-  const ordered = orderShelf(parsed, sort, limit);
-  const renderable = rssConverter(ordered);
+  const fetched = await fetchWidgetShelf(
+    goodreadsId,
+    String(randomInt(10000000)),
+    shelf,
+    sort,
+    limit,
+  );
+  const widgetCode = extractWidgetCode(fetched);
+  const parsed = parseHtml(widgetCode);
+  const limitedParsed = parsed.slice(0, limit);
+  const renderable = widgetConverter(limitedParsed);
   const rendered = renderShelf(renderable, ratings);
   const replaced = replaceSection(readmeData, marker, rendered);
 
   if (replaced === readmeData) {
     return {
       hasChanged: false,
-      bookCount: ordered.length,
+      bookCount: limitedParsed.length,
     };
   }
 
@@ -58,6 +65,6 @@ export const updateReadme = async (
 
   return {
     hasChanged: true,
-    bookCount: ordered.length,
+    bookCount: limitedParsed.length,
   };
 };
