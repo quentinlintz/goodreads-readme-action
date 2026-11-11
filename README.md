@@ -1,15 +1,14 @@
 # Goodreads README Action
 
 > [!WARNING]
-> Goodreads [discontinued RSS in October 2026](https://www.goodreads.com/blog/show/20-more-rss-feeds), which was required for this action to successfully run. Releases v1.0.0, v1.0.1, and the main branch are affected by a 404 returned from the RSS path, but existing README content is preserved. A solution to pull data from Goodreads widgets is currently [under development](https://github.com/quentinlintz/goodreads-readme-action/pull/2).
+> Goodreads [discontinued RSS in October 2026](https://www.goodreads.com/blog/show/20-more-rss-feeds), which was required for this action to successfully run. Releases v1.0.0 and v1.0.1 are affected by a 404 returned from the RSS path, but existing README content is preserved. Use v2.0.0 for the new widget-based shelf fetching method!
 
 Automatically update your profile README with any of your public [Goodreads](https://goodreads.com) shelves!
 
 ## Why
 
-This action is for developers who read a lot (like myself). It uses the RSS feed associated with a Goodreads profile to pull shelf data and replaces _part_ of your profile README automatically. It's currently experimental.
-
-See my [GitHub profile](https://github.com/quentinlintz) for an example of the output. Books won't successfully update until the widget migration is released.
+This action is for developers who read a lot (like myself). It uses Goodreads' widget feature to pull shelf data and replaces _part_ of your profile README automatically.
+See my [GitHub profile](https://github.com/quentinlintz) for an example of the output.
 
 ![Example Goodreads shelves showing currently reading books and recently read books with ratings](docs/images/example.png)
 
@@ -31,7 +30,7 @@ See my [GitHub profile](https://github.com/quentinlintz) for an example of the o
 <!-- GOODREADS-READ:END -->
 ```
 
-`.github/workflows/rss-workflow.yml`
+`.github/workflows/goodreads-workflow.yml`
 
 ```yml
 name: Sync Goodreads
@@ -57,7 +56,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Pull currently reading
-        uses: quentinlintz/goodreads-readme-action@v1.0.0
+        uses: quentinlintz/goodreads-readme-action@v2.0.0
         with:
           goodreads-user-id: 160841838 # Replace this with your Goodreads profile ID
           shelf: currently-reading
@@ -67,7 +66,7 @@ jobs:
           max-books: 5
 
       - name: Pull recently read
-        uses: quentinlintz/goodreads-readme-action@v1.0.0
+        uses: quentinlintz/goodreads-readme-action@v2.0.0
         with:
           goodreads-user-id: 160841838 # Replace this with your Goodreads profile ID
           shelf: read
@@ -93,7 +92,7 @@ jobs:
 
 - Add matching HTML-comment markers to your GitHub profile's README.md for replacing.
 
-- Add `quentinlintz/goodreads-readme-action@v1.0.0` to a workflow in your GitHub profile repo. Save it under `.github/workflows/`.
+- Add `quentinlintz/goodreads-readme-action@v2.0.0` to a workflow in your GitHub profile repo. Save it under `.github/workflows/`.
 
 - When you've pushed this, trigger the workflow from the Actions tab and your README will be updated.
 
@@ -105,66 +104,34 @@ jobs:
 | readme-path       | a file path, including subdirectories    | string                  | README.md         |
 | shelf             | your Goodreads shelf to target           | string                  | currently-reading |
 | section           | the name shared by the START/END markers | string                  | GOODREADS-LIST    |
-| sort              | newest first, with missing dates last    | date-added or date-read | date-added        |
+| sort              | newest first: supplied by Goodreads      | date-added or date-read | date-added        |
 | show-rating       | stars that represent your book ratings   | boolean                 | false             |
 | max-books         | limit to the number of books rendered    | positive integer        | 10                |
 
 ## Behavior
 
-Here's a selection of RSS examples and their rendered output for a visual of how this action should behave. I'm using part of my [Read](https://www.goodreads.com/review/list_rss/160841838?shelf=read) shelf's RSS response as an example here. These are by default sorted by most recently added first (on top).
+Here's a selection of widget_code examples and their rendered output for a visual of how this action should behave. I'm using part of my [Currently Reading](https://www.goodreads.com/review/list/160841838-quentin-lintz?ref=nav_mybooks&shelf=currently-reading) shelf's widget response as an example here. These are by default sorted by most recently added first (on top).
 
 ### Multiple books
 
-Shelf RSS:
-
-```xml
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <item>
-      <title>A Gentleman in Moscow</title>
-      <book_id>45695810</book_id>
-      <author_name>Amor Towles</author_name>
-      <user_rating>3</user_rating>
-      <user_read_at><![CDATA[Tue, 1 Sep 2026 00:00:00 +0000]]></user_read_at>
-      <user_date_added><![CDATA[Sun, 06 Sep 2026 14:21:57 -0700]]></user_date_added>
-    </item>
-    <item>
-      <title>Great Songwriting Techniques</title>
-      <book_id>39704081</book_id>
-      <author_name>Jack Perricone</author_name>
-      <user_rating></user_rating>
-      <user_read_at><![CDATA[Sun, 30 Aug 2026 00:00:00 +0000]]></user_read_at>
-      <user_date_added><![CDATA[Sun, 30 Aug 2026 16:33:46 -0700]]></user_date_added>
-    </item>
-  </channel>
-</rss>
-```
+[Shelf widget_code HTML](/tests/fixtures/widget-currently-reading.expected.html)
 
 Profile README:
 
 ```markdown
 <!-- GOODREADS-LIST:START -->
 
-- [A Gentleman in Moscow](https://www.goodreads.com/book/show/45695810), Amor Towles ★★★☆☆ (3/5)
-- [Great Songwriting Techniques](https://www.goodreads.com/book/show/39704081), Jack Perricone
+- [Designing Data\-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems](https://www.goodreads.com/review/show/8889919757), Martin Kleppmann
+- [The Black Prince](https://www.goodreads.com/review/show/9046024131), Iris Murdoch
 
 <!-- GOODREADS-LIST:END -->
 ```
 
-The stars are omitted if the book does not have a user rating or if the user hasn't enabled it. The default ordering is most-recently added at the top.
-
-Goodreads has [added quarter- and half-star ratings](https://www.goodreads.com/blog/show/3199), but I've observed their RSS may not support them yet (as of October 12, 2026). Filled stars show the whole-number portion, while the numeric score preserves the exact RSS rating. The action supports fractional values whenever RSS supplies them.
+The stars are omitted if the book does not have a user rating or if the user hasn't enabled it. Goodreads supplies the ordering.
 
 ### Empty shelf
 
-Shelf RSS:
-
-```xml
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-  </channel>
-</rss>
-```
+[Shelf widget_code HTML](./tests/fixtures/widget-valid-empty.expected.html)
 
 Profile README:
 
