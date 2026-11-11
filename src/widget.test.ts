@@ -16,6 +16,14 @@ const readTxtPath = path.resolve(
   process.cwd(),
   "tests/fixtures/widget-read-dr-desc.txt",
 );
+const emptyTxtPath = path.resolve(
+  process.cwd(),
+  "tests/fixtures/widget-valid-empty.txt",
+);
+const emptyHtmlPath = path.resolve(
+  process.cwd(),
+  "tests/fixtures/widget-valid-empty.expected.html",
+);
 const readHtmlPath = path.resolve(
   process.cwd(),
   "tests/fixtures/widget-read-dr-desc.expected.html",
@@ -30,6 +38,8 @@ const currentlyReadingHtmlData = fs.readFileSync(
 );
 const readTxtData = fs.readFileSync(readTxtPath, "utf-8");
 const readHtmlData = fs.readFileSync(readHtmlPath, "utf-8");
+const emptyTxtData = fs.readFileSync(emptyTxtPath, "utf-8");
+const emptyHtmlData = fs.readFileSync(emptyHtmlPath, "utf-8");
 const expectedCurrentlyReading: WidgetBook[] = [
   {
     title:
@@ -96,6 +106,11 @@ describe("extractWidgetCode", () => {
   test("extracts read fixture", () => {
     const result = extractWidgetCode(readTxtData);
     expect(result).toBe(readHtmlData);
+  });
+
+  test("extracts empty fixture", () => {
+    const result = extractWidgetCode(emptyTxtData);
+    expect(result).toBe(emptyHtmlData);
   });
 
   test("extracts inside widget_code multiline", () => {
@@ -447,5 +462,30 @@ describe("parseHtml", () => {
     expect(() => parseHtml(wrongStarImage)).toThrow(
       "Incorrect number of active and inactive stars in rating",
     );
+  });
+
+  test("empty shelf", () => {
+    const parsed = parseHtml(emptyHtmlData);
+    expect(parsed).toEqual([]);
+  });
+
+  test("no header", () => {
+    const noHeader = `
+<div class="gr_custom_container_1794365618">
+  <br style="clear: both"/>
+  <center>
+    <a rel="nofollow" href="https://www.goodreads.com/"><img alt="goodreads.com" style="border:0" src="https://s.gr-assets.com/images/widget/widget_logo.gif" /></a>
+  </center>
+  <noscript>
+    Share <a rel="nofollow" href="https://www.goodreads.com/">book reviews</a> and ratings with Quentin, and even join a <a rel="nofollow" href="https://www.goodreads.com/group">book club</a> on Goodreads.
+  </noscript>
+</div>
+`;
+    expect(() => parseHtml(noHeader)).toThrow("Missing widget header");
+  });
+
+  test("unrelated html", () => {
+    const unrelated = `<html><div class="hello"></div></html>`;
+    expect(() => parseHtml(unrelated)).toThrow("Missing custom container");
   });
 });

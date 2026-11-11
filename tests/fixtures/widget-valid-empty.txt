@@ -1,0 +1,8 @@
+  var widget_code = '  <div class=\"gr_custom_container_1794365618\">\n    <h2 class=\"gr_custom_header_1794365618\">\n    <a style=\"text-decoration: none;\" rel=\"nofollow\" href=\"https://www.goodreads.com/review/list/160841838-quentin-lintz?shelf=did-not-finish&amp;utm_medium=api&amp;utm_source=custom_widget\">Quentin&#39;s bookshelf: did-not-finish<\/a>\n    <\/h2>\n  <br style=\"clear: both\"/>\n  <center>\n    <a rel=\"nofollow\" href=\"https://www.goodreads.com/\"><img alt=\"goodreads.com\" style=\"border:0\" src=\"https://s.gr-assets.com/images/widget/widget_logo.gif\" /><\/a>\n  <\/center>\n  <noscript>\n    Share <a rel=\"nofollow\" href=\"https://www.goodreads.com/\">book reviews<\/a> and ratings with Quentin, and even join a <a rel=\"nofollow\" href=\"https://www.goodreads.com/group\">book club<\/a> on Goodreads.\n  <\/noscript>\n  <\/div>\n'
+  var widget_div = document.getElementById('gr_custom_widget_1794365618')
+  if (widget_div) {
+    widget_div.innerHTML = widget_code
+  }
+  else {
+    document.write(widget_code)
+  }

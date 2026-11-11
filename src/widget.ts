@@ -85,10 +85,16 @@ export const extractWidgetCode = (text: string): string => {
 export const parseHtml = (widgetCode: string): WidgetBook[] => {
   const books: WidgetBook[] = [];
   const $ = cherrio.load(widgetCode, null, false);
-  const eachContainer = $('[class^="gr_custom_container_"]').children(
+  const customContainer = $('[class^="gr_custom_container_"]');
+  if (customContainer.length === 0) throw new Error("Missing custom container");
+  const shelfHeader = customContainer.children('[class^="gr_custom_header_"]');
+  const eachContainer = customContainer.children(
     '[class^="gr_custom_each_container_"]',
   );
-  if (eachContainer.length === 0) throw new Error("Missing widget container");
+  if (eachContainer.length === 0) {
+    if (shelfHeader.length !== 0) return [];
+    throw new Error("Missing widget header");
+  }
   eachContainer.each((_, el) => {
     const titleContainer = $(el).find('[class^="gr_custom_title_"]');
     if (titleContainer.length === 0) throw new Error("Missing title container");
