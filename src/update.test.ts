@@ -5,24 +5,24 @@ import { updateReadme } from "./update.js";
 import { tmpdir } from "os";
 import { ZodError } from "zod";
 
-const currentlyReadingXmlFilePath = path.resolve(
+const currentlyReadingTxtFilePath = path.resolve(
   process.cwd(),
-  "tests/fixtures/currently-reading.xml",
+  "tests/fixtures/widget-currently-reading.txt",
 );
-const validEmptyXmlFilePath = path.resolve(
+const validEmptyTxtFilePath = path.resolve(
   process.cwd(),
-  "tests/fixtures/valid-empty.xml",
+  "tests/fixtures/widget-valid-empty.txt",
 );
-const malformedXmlFilePath = path.resolve(
+const malformedTxtFilePath = path.resolve(
   process.cwd(),
-  "tests/fixtures/malformed.xml",
+  "tests/fixtures/widget-malformed.txt",
 );
-const currentlyReadingXmlData = fs.readFileSync(
-  currentlyReadingXmlFilePath,
+const currentlyReadingTxtData = fs.readFileSync(
+  currentlyReadingTxtFilePath,
   "utf-8",
 );
-const validEmptyXmlData = fs.readFileSync(validEmptyXmlFilePath, "utf-8");
-const malformedXmlData = fs.readFileSync(malformedXmlFilePath, "utf-8");
+const validEmptyTxtData = fs.readFileSync(validEmptyTxtFilePath, "utf-8");
+const malformedTxtData = fs.readFileSync(malformedTxtFilePath, "utf-8");
 
 const fixtureFile = join(process.cwd(), "tests/fixtures/README.md");
 let tempDir: string;
@@ -45,7 +45,7 @@ describe("updateReadme", () => {
 
   test("changed", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(
-      new Response(currentlyReadingXmlData, {
+      new Response(currentlyReadingTxtData, {
         status: 200,
       }),
     );
@@ -68,7 +68,7 @@ describe("updateReadme", () => {
 
   test("unchanged", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(
-      new Response(currentlyReadingXmlData, {
+      new Response(currentlyReadingTxtData, {
         status: 200,
       }),
     );
@@ -81,7 +81,7 @@ describe("updateReadme", () => {
     const writeSpy = vi.spyOn(fs, "writeFileSync");
 
     vi.spyOn(globalThis, "fetch").mockResolvedValue(
-      new Response(currentlyReadingXmlData, {
+      new Response(currentlyReadingTxtData, {
         status: 200,
       }),
     );
@@ -101,7 +101,7 @@ describe("updateReadme", () => {
 
   test("empty shelf", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(
-      new Response(validEmptyXmlData, {
+      new Response(validEmptyTxtData, {
         status: 200,
       }),
     );
@@ -121,7 +121,7 @@ describe("updateReadme", () => {
 
   test("limit 1", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(
-      new Response(currentlyReadingXmlData, {
+      new Response(currentlyReadingTxtData, {
         status: 200,
       }),
     );
@@ -136,14 +136,14 @@ describe("updateReadme", () => {
     expect(bookCount).toBe(1);
     const tempFileData = readFileSync(tempFile, "utf-8");
     expect(tempFileData).toContain(`
-- [Designing Data\\-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems](https://www.goodreads.com/book/show/248156714), Martin Kleppmann`);
+- [Designing Data\\-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems](https://www.goodreads.com/review/show/8889919757), Martin Kleppmann`);
     expect(tempFileData).not.toContain(`
-- [The Sea, the Sea](https://www.goodreads.com/book/show/9843479), Iris Murdoch`);
+- [The Black Prince](https://www.goodreads.com/review/show/9046024131), Iris Murdoch`);
   });
 
   test("fetch failure", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(
-      new Response(currentlyReadingXmlData, {
+      new Response(currentlyReadingTxtData, {
         status: 500,
       }),
     );
@@ -163,7 +163,7 @@ describe("updateReadme", () => {
 
   test("write failure", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(
-      new Response(currentlyReadingXmlData, {
+      new Response(currentlyReadingTxtData, {
         status: 200,
       }),
     );
@@ -182,9 +182,9 @@ describe("updateReadme", () => {
     );
   });
 
-  test("invalid xml", async () => {
+  test("invalid widget_code", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(
-      new Response(malformedXmlData, {
+      new Response(malformedTxtData, {
         status: 200,
       }),
     );
@@ -195,7 +195,7 @@ describe("updateReadme", () => {
         goodreadsId: "123",
         readmePath: tempFile,
       }),
-    ).rejects.toThrow("Expected closing tag");
+    ).rejects.toThrow("Missing author container");
     expect(readFileSync(tempFile, "utf-8")).toEqual(
       readFileSync(join(process.cwd(), "tests/fixtures/README.md"), "utf-8"),
     );
@@ -218,7 +218,7 @@ describe("updateReadme", () => {
 
   test("missing marker", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(
-      new Response(currentlyReadingXmlData, {
+      new Response(currentlyReadingTxtData, {
         status: 200,
       }),
     );
@@ -238,7 +238,7 @@ describe("updateReadme", () => {
 
   test("invalid input", async () => {
     const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue(
-      new Response(currentlyReadingXmlData, {
+      new Response(currentlyReadingTxtData, {
         status: 200,
       }),
     );

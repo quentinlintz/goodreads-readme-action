@@ -3,19 +3,15 @@ import { renderShelf } from "./render.js";
 
 const bookOne = {
   title: "Book 1",
-  author_name: "Author 1",
-  book_id: 1,
-  user_rating: 5,
-  user_date_added: 100,
-  user_read_at: 100,
+  authorName: "Author 1",
+  userRating: 5,
+  url: `https://www.goodreads.com/book/show/1`,
 };
 const bookTwo = {
   title: "Book 2",
-  author_name: "Author 2",
-  book_id: 2,
-  user_rating: 3,
-  user_date_added: 200,
-  user_read_at: 200,
+  authorName: "Author 2",
+  userRating: 3,
+  url: `https://www.goodreads.com/book/show/2`,
 };
 
 describe("renderShelf", () => {
@@ -37,7 +33,7 @@ describe("renderShelf", () => {
     const expectedMarkdown = `- [Book 1](https://www.goodreads.com/book/show/1), Author 1
 - [Book 2](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆ (3/5)`;
     const markdown = renderShelf(
-      [{ ...bookOne, user_rating: 0 }, bookTwo],
+      [{ ...bookOne, userRating: 0 }, bookTwo],
       true,
     );
     expect(markdown).toBe(expectedMarkdown);
@@ -47,7 +43,7 @@ describe("renderShelf", () => {
     const expectedMarkdown = `- [Book 1](https://www.goodreads.com/book/show/1), Author 1 ★★★☆☆ (3.25/5)
 - [Book 2](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆ (3/5)`;
     const markdown = renderShelf(
-      [{ ...bookOne, user_rating: 3.25 }, bookTwo],
+      [{ ...bookOne, userRating: 3.25 }, bookTwo],
       true,
     );
     expect(markdown).toBe(expectedMarkdown);
@@ -57,7 +53,7 @@ describe("renderShelf", () => {
     const expectedMarkdown = `- [Book 1](https://www.goodreads.com/book/show/1), Author 1 ★★★☆☆ (3.5/5)
 - [Book 2](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆ (3/5)`;
     const markdown = renderShelf(
-      [{ ...bookOne, user_rating: 3.5 }, bookTwo],
+      [{ ...bookOne, userRating: 3.5 }, bookTwo],
       true,
     );
     expect(markdown).toBe(expectedMarkdown);
@@ -67,7 +63,7 @@ describe("renderShelf", () => {
     const expectedMarkdown = `- [Book 1](https://www.goodreads.com/book/show/1), Author 1 ★★★☆☆ (3.75/5)
 - [Book 2](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆ (3/5)`;
     const markdown = renderShelf(
-      [{ ...bookOne, user_rating: 3.75 }, bookTwo],
+      [{ ...bookOne, userRating: 3.75 }, bookTwo],
       true,
     );
     expect(markdown).toBe(expectedMarkdown);
@@ -87,7 +83,7 @@ describe("renderShelf", () => {
 
   test("input shelf remains unchanged", () => {
     const input = [
-      { ...bookTwo, title: "Book: 2!", author_name: "Author, 2\\" },
+      { ...bookTwo, title: "Book: 2!", authorName: "Author, 2\\" },
       bookOne,
       bookTwo,
     ];
@@ -101,7 +97,7 @@ describe("renderShelf", () => {
 - [\\<i\\>Book 2\\</i\\>](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆ (3/5)`;
     const markdown = renderShelf(
       [
-        { ...bookOne, author_name: "<i>Author 1</i>" },
+        { ...bookOne, authorName: "<i>Author 1</i>" },
         { ...bookTwo, title: "<i>Book 2</i>" },
       ],
       true,
@@ -114,7 +110,7 @@ describe("renderShelf", () => {
 - [\\[Book 2\\]](https://www.goodreads.com/book/show/2), Author 2 ★★★☆☆ (3/5)`;
     const markdown = renderShelf(
       [
-        { ...bookOne, author_name: "[Author 1]" },
+        { ...bookOne, authorName: "[Author 1]" },
         { ...bookTwo, title: "[Book 2]" },
       ],
       true,
@@ -130,9 +126,9 @@ describe("renderShelf", () => {
         {
           ...bookOne,
           title: "Book\n1\n",
-          author_name: "Author\r\n1\r",
+          authorName: "Author\r\n1\r",
         },
-        { ...bookTwo, title: "Book\r2\r", author_name: "Author 2\r\n" },
+        { ...bookTwo, title: "Book\r2\r", authorName: "Author 2\r\n" },
       ],
       true,
     );
@@ -146,7 +142,7 @@ describe("renderShelf", () => {
     const markdown = renderShelf(
       [
         bookOne,
-        { ...bookTwo, title: "_Book:_ `2!!`", author_name: "Author *2*.\\" },
+        { ...bookTwo, title: "_Book:_ `2!!`", authorName: "Author *2*.\\" },
       ],
       true,
     );
