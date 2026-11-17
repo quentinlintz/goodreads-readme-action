@@ -86403,6 +86403,15 @@ var parseHtml = (widgetCode) => {
       const star = $2(el2).attr("src");
       if (star === "https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png") {
         userRating++;
+      } else if (star === "https://s.gr-assets.com/images/layout/gr_flat_red_star_25pct.png") {
+        userRating += 0.25;
+        inactiveStars += 0.75;
+      } else if (star === "https://s.gr-assets.com/images/layout/gr_flat_red_star_50pct.png") {
+        userRating += 0.5;
+        inactiveStars += 0.5;
+      } else if (star === "https://s.gr-assets.com/images/layout/gr_flat_red_star_75pct.png") {
+        userRating += 0.75;
+        inactiveStars += 0.25;
       } else if (star === "https://s.gr-assets.com/images/layout/gr_flat_red_star_inactive.png") {
         inactiveStars++;
       } else {

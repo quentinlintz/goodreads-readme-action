@@ -16,6 +16,8 @@ Expected output: ./widget-currently-reading.expected.md
 
 ### Read
 
+This was modified to include fractional formats.
+
 URL: <https://www.goodreads.com/review/custom_widget/160841838.Quentin's%20bookshelf:%20read?cover_position=left&cover_size=small&num_books=5&order=d&shelf=read&show_author=1&show_cover=1&show_rating=1&show_review=1&show_tags=1&show_title=1&sort=date_read&widget_bg_color=FFFFFF&widget_bg_transparent=&widget_border_width=1&widget_id=1794319865&widget_text_color=000000&widget_title_size=medium&widget_width=medium>
 Input: ./widget-read-dr-desc.txt
 HTML: ./widget-read-dr-desc.expected.html
