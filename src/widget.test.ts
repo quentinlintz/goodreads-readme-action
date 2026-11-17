@@ -59,20 +59,20 @@ const expectedRead: WidgetBook[] = [
   {
     title: "The Fisherman",
     author_name: "John  Langan",
-    user_rating: 4,
+    user_rating: 3.25,
     review_url: "https://www.goodreads.com/review/show/9030365344",
   },
   {
     title:
       "Show Your Work!: 10 Ways to Share Your Creativity and Get Discovered",
     author_name: "Austin Kleon",
-    user_rating: 5,
+    user_rating: 4.5,
     review_url: "https://www.goodreads.com/review/show/9021062245",
   },
   {
     title: "The Hobbit",
     author_name: "J.R.R. Tolkien",
-    user_rating: 3,
+    user_rating: 2.75,
     review_url: "https://www.goodreads.com/review/show/8980887441",
   },
   {
@@ -428,7 +428,7 @@ describe("parseHtml", () => {
 
   test("missing rating span", () => {
     const wrongStarImage = readHtmlData.replace(
-      `<span class=" staticStars notranslate" title="really liked it"><img style="width:15px;height:15px" alt="really liked it" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_inactive.png" /></span>`,
+      `<span class=" staticStars notranslate" title="really liked it"><img style="width:15px;height:15px" alt="really liked it" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_25pct.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_inactive.png" /></span>`,
       ``,
     );
     expect(() => parseHtml(wrongStarImage)).toThrow("Missing rating span");
@@ -436,7 +436,7 @@ describe("parseHtml", () => {
 
   test("unrecognized star images", () => {
     const wrongStarImage = readHtmlData.replace(
-      `<span class=" staticStars notranslate" title="really liked it"><img style="width:15px;height:15px" alt="really liked it" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_inactive.png" /></span>`,
+      `<span class=" staticStars notranslate" title="really liked it"><img style="width:15px;height:15px" alt="really liked it" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_25pct.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_inactive.png" /></span>`,
       `<span class=" staticStars notranslate" title="really liked it"><img style="width:15px;height:15px" alt="really liked it" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://assets.com/images/layout/gr_flat_red_star_inactive.png" /></span>`,
     );
     expect(() => parseHtml(wrongStarImage)).toThrow(
@@ -446,7 +446,7 @@ describe("parseHtml", () => {
 
   test("six star images", () => {
     const wrongStarImage = readHtmlData.replace(
-      `<span class=" staticStars notranslate" title="really liked it"><img style="width:15px;height:15px" alt="really liked it" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_inactive.png" /></span>`,
+      `<span class=" staticStars notranslate" title="really liked it"><img style="width:15px;height:15px" alt="really liked it" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_25pct.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_inactive.png" /></span>`,
       `<span class=" staticStars notranslate" title="really liked it"><img style="width:15px;height:15px" alt="really liked it" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_inactive.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_inactive.png" /></span>`,
     );
     expect(() => parseHtml(wrongStarImage)).toThrow(
@@ -456,7 +456,7 @@ describe("parseHtml", () => {
 
   test("four star images", () => {
     const wrongStarImage = readHtmlData.replace(
-      `<span class=" staticStars notranslate" title="really liked it"><img style="width:15px;height:15px" alt="really liked it" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_inactive.png" /></span>`,
+      `<span class=" staticStars notranslate" title="really liked it"><img style="width:15px;height:15px" alt="really liked it" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_25pct.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_inactive.png" /></span>`,
       `<span class=" staticStars notranslate" title="really liked it"><img style="width:15px;height:15px" alt="really liked it" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /><img style="width:15px;height:15px" alt="" src="https://s.gr-assets.com/images/layout/gr_flat_red_star_active.png" /></span>`,
     );
     expect(() => parseHtml(wrongStarImage)).toThrow(
